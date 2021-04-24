@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
+import { Header } from "components/common/Header";
 import { SupportForm } from "components/support/Support";
 
 const Page = styled.div`
@@ -13,6 +14,7 @@ const Page = styled.div`
 const IndexView: FC = () => {
   return (
     <Page>
+      <Header />
       <SupportForm />
     </Page>
   );

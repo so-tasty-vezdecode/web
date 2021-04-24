@@ -7,6 +7,7 @@ import { syncHistoryWithStore } from "mobx-react-router";
 
 import { routerStore } from "stores/RouterStore";
 import { GlobalStyle } from "components/common/globalStyle";
+
 import Routes from "Routes";
 
 import "antd/dist/antd.css";
