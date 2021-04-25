@@ -15,7 +15,7 @@ export const RequestsHeader: FC<IProps> = observer(({ store }) => {
   const [form] = Form.useForm();
 
   return (
-    <Card title={"График открытых заявок"}>
+    <Card title={"Диаграмма заявок"}>
       <Form form={form}>
         <Row gutter={32}>
           <Col span={8}>

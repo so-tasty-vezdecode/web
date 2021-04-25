@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { Space } from "antd";
 import { observer } from "mobx-react";
 import { Line } from "@ant-design/charts";
+import { toJS } from "mobx";
 
 import { RequestsStore } from "components/chartRequests/ChartRequestsStore";
 import { RequestsHeader } from "components/chartRequests/ChartRequestsHeader";
-import { toJS } from "mobx";
 
 const CenteredContainer = styled.div`
   position: relative;

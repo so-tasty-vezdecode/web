@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Form, Input, Modal } from "antd";
 import { observer } from "mobx-react";
 
@@ -38,7 +38,11 @@ export const ModalSupport: FC<IProps> = observer(({ store }) => {
     onSubmit(data);
   };
 
-  if (!isOpenedModal) return null;
+  useEffect(() => {
+    if (isOpenedModal) {
+      form.resetFields();
+    }
+  }, [isOpenedModal]);
 
   return (
     <Modal

@@ -1,11 +1,13 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Table, Space } from "antd";
+import { Table, Space, Dropdown, Menu, Button } from "antd";
 import { observer } from "mobx-react";
 
-import { RequestsStore } from "components/requests/RequestsStore";
+import { IRequest, RequestsStore } from "components/requests/RequestsStore";
 import { RequestsFilters } from "components/requests/RequestFilters";
+import { RequestEditModal } from "components/requests/RequestEditModal";
 import { toJS } from "mobx";
+import moment from "moment";
 
 const CenteredContainer = styled.div`
   position: relative;
@@ -20,13 +22,13 @@ interface IProps {
 }
 
 export const RequestsTable: FC<IProps> = observer(({ store }) => {
-  const { isLoading, requests } = store;
+  const { isLoading, requests, openModal } = store;
 
   const columns = [
     {
       title: "ID обращения",
       dataIndex: "id",
-      width: "20%",
+      width: "15%",
     },
     {
       title: "Пользователь",
@@ -42,18 +44,52 @@ export const RequestsTable: FC<IProps> = observer(({ store }) => {
       title: "Статус",
       dataIndex: "status",
       width: "15%",
+      render: (status: string) =>
+        status === "created" ? "Новое" : "Завершено",
     },
     {
-      title: "Дата создания обращения",
+      title: "Дата создания",
       dataIndex: "createdAt",
-      width: "25%",
-      render: (data: any) => String(new Date(data.seconds * 1000)),
+      width: "16%",
+      render: (data: any) =>
+        moment(data.seconds * 1000).format("MMM DD YYYY HH:mm:ss"),
+    },
+    {
+      title: "Дата закрытия",
+      dataIndex: "closedAt",
+      width: "16%",
+      render: (data: any) =>
+        data && moment(data.seconds * 1000).format("MMM DD YYYY HH:mm:ss"),
+    },
+    {
+      key: "actions",
+      width: "10%",
+      ellipsis: true,
+      render: (_: any, record: IRequest) => (
+        <Dropdown
+          overlay={
+            <Menu
+              onClick={({ domEvent }) => {
+                domEvent.stopPropagation();
+              }}
+            >
+              <Menu.Item onClick={() => openModal(record.id)}>
+                Редактировать
+              </Menu.Item>
+            </Menu>
+          }
+          placement="bottomLeft"
+        >
+          <Button type="text">...</Button>
+        </Dropdown>
+      ),
     },
   ];
 
   return (
     <CenteredContainer>
       <RequestsFilters store={store} />
+      <RequestEditModal store={store} />
       <Space>
         <Table
           loading={isLoading}

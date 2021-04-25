@@ -6,6 +6,7 @@ import {
   addDoc,
   getDocs,
   orderBy,
+  updateDoc,
 } from "firebase/firestore";
 
 import { db } from "api/firebase";
@@ -32,6 +33,17 @@ export const createRequest = async (params: IRequestCreateParams) => {
   });
 
   return docRef;
+};
+
+export const updateRequest = async (id: string) => {
+  const q = query(collection(db, "requests"), where("id", "==", id));
+  const requestDocs = await getDocs(q);
+  const requestRef = requestDocs.docs[0].ref;
+
+  await updateDoc(requestRef, {
+    status: "closed",
+    closedAt: new Date(),
+  });
 };
 
 // Используется firebase

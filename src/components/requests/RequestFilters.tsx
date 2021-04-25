@@ -84,10 +84,10 @@ export const RequestsFilters: FC<IProps> = observer(({ store }) => {
                 }}
               >
                 <Option value={"created"} key={"created"}>
-                  Created
+                  Новое
                 </Option>
                 <Option value={"closed"} key={"closed"}>
-                  Closed
+                  Завершено
                 </Option>
               </Select>
             </Form.Item>

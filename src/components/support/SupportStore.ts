@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 
-import { createRequest, getRequests, IRequestCreateParams } from "api/support";
+import { createRequest, IRequestCreateParams } from "api/support";
 
 export class SupportStore {
   isOpenedModal: boolean = false;

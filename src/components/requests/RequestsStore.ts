@@ -1,8 +1,9 @@
 import { makeAutoObservable, toJS } from "mobx";
 
-import { getRequests, IRequestFetchParams } from "api/support";
+import { getRequests, IRequestFetchParams, updateRequest } from "api/support";
 
 export interface IRequest {
+  id: string;
   name: string;
   phone: string;
   text: string;
@@ -12,11 +13,18 @@ export interface IRequest {
 
 export class RequestsStore {
   isLoading: boolean = false;
+  isOpenedModal: boolean = false;
+
+  requestId: string = "";
   requests: IRequest[] = [];
   filters: IRequestFetchParams = {};
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get currRequest() {
+    return this.requests.find((request) => request.id === this.requestId);
   }
 
   load = async () => {
@@ -63,5 +71,29 @@ export class RequestsStore {
     };
 
     this.load();
+  };
+
+  openModal = (requestId: string) => {
+    this.isOpenedModal = true;
+    this.requestId = requestId;
+  };
+
+  closeModal = () => {
+    this.isOpenedModal = false;
+    this.requestId = "";
+  };
+
+  changeRequestStatus = async () => {
+    this.isLoading = true;
+
+    try {
+      await updateRequest(this.requestId);
+
+      this.closeModal();
+      this.load();
+    } catch (error) {
+    } finally {
+      this.isLoading = false;
+    }
   };
 }
